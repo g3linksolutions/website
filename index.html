@@ -1370,6 +1370,22 @@
 
     // Modal functions
     function showRegister() {
+      // Reset form to blank state every time modal opens
+      const form = document.getElementById('registerForm');
+      if (form) {
+        form.reset();
+        // Clear all inline errors and red borders
+        form.querySelectorAll('.field-err').forEach(e => e.classList.add('hidden'));
+        form.querySelectorAll('.modal-input').forEach(e => e.classList.remove('border-red-400'));
+        // Reset password strength bar
+        const bar = document.getElementById('strengthBar');
+        const txt = document.getElementById('strengthText');
+        if (bar) { bar.style.width = '0%'; }
+        if (txt) { txt.textContent = ''; }
+        // Hide general form error
+        const fe = document.getElementById('formError');
+        if (fe) fe.classList.add('hidden');
+      }
       document.getElementById('registerModal').classList.remove('hidden');
     }
     function closeModal(modalId) {
@@ -1417,8 +1433,41 @@
       event.preventDefault();
       let valid = true;
 
-      // Helper
+      // Helper to get trimmed value by id or name
       const val = id => (document.getElementById(id) || document.querySelector('[name="'+id+'"]'))?.value?.trim() || '';
+
+      // ── Phone code → expected country mapping ──
+      const phoneCodeCountries = {
+        '+1':   ['Canada','United States'],
+        '+44':  ['United Kingdom'],
+        '+91':  ['India'],
+        '+61':  ['Australia'],
+        '+49':  ['Germany'],
+        '+33':  ['France'],
+        '+86':  ['China'],
+        '+81':  ['Japan'],
+        '+55':  ['Brazil'],
+        '+52':  ['Mexico'],
+        '+27':  ['South Africa'],
+        '+234': ['Nigeria'],
+        '+254': ['Kenya'],
+        '+971': ['United Arab Emirates'],
+        '+92':  ['Pakistan'],
+        '+880': ['Bangladesh'],
+        '+94':  ['Sri Lanka'],
+        '+63':  ['Philippines'],
+        '+62':  ['Indonesia'],
+        '+60':  ['Malaysia'],
+        '+65':  ['Singapore'],
+        '+64':  ['New Zealand'],
+        '+353': ['Ireland'],
+        '+31':  ['Netherlands'],
+        '+34':  ['Spain'],
+        '+39':  ['Italy'],
+        '+7':   ['Russia'],
+        '+82':  ['South Korea'],
+        '+20':  ['Egypt'],
+      };
 
       // Company name
       if (!val('companyName')) { showErr('companyName'); valid = false; }
@@ -1426,10 +1475,10 @@
       if (!val('contactName')) { showErr('contactName'); valid = false; }
       // Email
       const emailVal = val('regEmail');
-      if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { showErr('regEmail'); valid = false; }
+      if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { showErr('regEmail', 'Enter a valid email address.'); valid = false; }
       // Phone — digits only, 7–15 chars
       const phoneVal = val('regPhone').replace(/[\s\-().]/g, '');
-      if (!phoneVal || !/^\d{7,15}$/.test(phoneVal)) { showErr('regPhone'); valid = false; }
+      if (!phoneVal || !/^\d{7,15}$/.test(phoneVal)) { showErr('regPhone', 'Enter a valid phone number (7–15 digits).'); valid = false; }
       // Business type
       if (!val('businessType')) { showErr('businessType'); valid = false; }
       // Street
@@ -1440,8 +1489,9 @@
       if (!val('provinceState')) { showErr('provinceState'); valid = false; }
       // Postal code
       if (!val('postalCode')) { showErr('postalCode'); valid = false; }
-      // Country
-      if (!val('regCountry')) { showErr('regCountry'); valid = false; }
+      // Country — must not be empty
+      const countryVal = val('regCountry');
+      if (!countryVal) { showErr('regCountry', 'Please select a country.'); valid = false; }
       // Freight type
       const freightChecked = event.target.querySelectorAll('input[name="freightType"]:checked');
       if (freightChecked.length === 0) { showErr('freightType', 'Please select at least one freight type.'); valid = false; }
@@ -1456,8 +1506,17 @@
       const cpwd = document.getElementById('regConfirmPassword').value;
       if (pwd !== cpwd) { showErr('regConfirmPassword', 'Passwords do not match.'); valid = false; }
 
+      // Phone code vs country mismatch
+      const phoneCode = val('phoneCode');
+      if (phoneVal && countryVal && phoneCode && phoneCodeCountries[phoneCode]) {
+        const allowed = phoneCodeCountries[phoneCode];
+        if (!allowed.includes(countryVal)) {
+          showErr('regPhone', `Phone code ${phoneCode} does not match country "${countryVal}". Please select the correct country code.`);
+          valid = false;
+        }
+      }
+
       if (!valid) {
-        // Scroll to first error
         const firstErr = document.querySelector('.field-err:not(.hidden)');
         if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
@@ -1465,14 +1524,47 @@
 
       const fd = new FormData(event.target);
       const freightTypes = Array.from(freightChecked).map(c => c.value).join(', ');
-      const fullPhone = fd.get('phoneCode') + ' ' + phoneVal;
+      const fullPhone = phoneCode + ' ' + phoneVal;
 
       const submitBtn = event.target.querySelector('button[type="submit"]');
       const origText = submitBtn.textContent;
       submitBtn.textContent = 'Submitting...';
       submitBtn.disabled = true;
 
+      // Hide any previous form-level error
+      const formErr = document.getElementById('formError');
+      formErr.classList.add('hidden');
+
       try {
+        // ── Check duplicate email ──
+        const { data: existingEmail } = await sb
+          .from('shipper_registrations')
+          .select('id')
+          .eq('email', emailVal)
+          .maybeSingle();
+        if (existingEmail) {
+          showErr('regEmail', 'This email is already registered. Please use a different email.');
+          submitBtn.textContent = origText;
+          submitBtn.disabled = false;
+          document.getElementById('regEmail').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        // ── Check duplicate phone ──
+        const { data: existingPhone } = await sb
+          .from('shipper_registrations')
+          .select('id')
+          .eq('phone', fullPhone)
+          .maybeSingle();
+        if (existingPhone) {
+          showErr('regPhone', 'This phone number is already registered. Please use a different number.');
+          submitBtn.textContent = origText;
+          submitBtn.disabled = false;
+          document.getElementById('regPhone').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+
+        // ── Insert ──
         const { error } = await sb.from('shipper_registrations').insert({
           company_name:   fd.get('companyName'),
           contact_name:   fd.get('contactName'),
@@ -1484,7 +1576,7 @@
           city:           fd.get('city'),
           province_state: fd.get('provinceState'),
           postal_code:    fd.get('postalCode'),
-          country:        fd.get('regCountry'),
+          country:        countryVal,
           freight_types:  freightTypes,
           locations:      fd.get('locations'),
           frequency:      fd.get('frequency'),
@@ -1503,20 +1595,23 @@
             </div>
             <h3 class="text-xl font-bold mb-2" style="color:#111111">Registration Successful!</h3>
             <p class="text-gray-500 mb-6">Welcome to G3 LINK! Our team will be in touch shortly.</p>
-            <button onclick="closeModal('registerModal')"
+            <button onclick="showRegister()"
                     style="background:linear-gradient(135deg,#d92530,#b01c26)"
-                    class="text-white px-8 py-2 rounded-lg font-semibold hover:opacity-90 transition-all">
-              Continue
+                    class="text-white px-8 py-2 rounded-lg font-semibold hover:opacity-90 transition-all mr-2">
+              Register Another
+            </button>
+            <button onclick="closeModal('registerModal')"
+                    class="text-gray-600 px-8 py-2 rounded-lg font-semibold border border-gray-300 hover:bg-gray-50 transition-all">
+              Close
             </button>
           </div>`;
-        event.target.reset();
       } catch (err) {
         console.error('Registration error:', err);
         submitBtn.textContent = origText;
         submitBtn.disabled = false;
-        const formErr = document.getElementById('formError');
         formErr.textContent = 'Registration failed: ' + (err.message || 'Please try again.');
         formErr.classList.remove('hidden');
+        formErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
 
