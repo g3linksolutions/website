@@ -862,12 +862,6 @@
         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-freightType">Please select at least one freight type.</p>
        </div>
        <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-semibold mb-1">Primary Pickup &amp; Delivery Locations <span class="text-red-500">*</span></label>
-        <input type="text" name="locations" id="locations" placeholder="e.g. Toronto, ON to Chicago, IL" required
-               class="modal-input" oninput="clearErr('locations')">
-        <p class="field-err hidden text-red-500 text-xs mt-1" id="err-locations">Please enter pickup and delivery locations.</p>
-       </div>
-       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-semibold mb-1">How Frequently Do You Require Transportation? <span class="text-red-500">*</span></label>
         <select name="frequency" id="frequency" required class="modal-input" onchange="clearErr('frequency')">
          <option value="">Select frequency</option>
@@ -1514,8 +1508,6 @@
       // Freight type
       const freightChecked = event.target.querySelectorAll('input[name="freightType"]:checked');
       if (freightChecked.length === 0) { showErr('freightType', 'Please select at least one freight type.'); valid = false; }
-      // Locations
-      if (!val('locations')) { showErr('locations'); valid = false; }
       // Frequency
       if (!val('frequency')) { showErr('frequency'); valid = false; }
       // Password length
@@ -1597,7 +1589,6 @@
           postal_code:    fd.get('postalCode'),
           country:        countryVal,
           freight_types:  freightTypes,
-          locations:      fd.get('locations'),
           frequency:      fd.get('frequency'),
           comments:       fd.get('comments'),
           password:       pwd
