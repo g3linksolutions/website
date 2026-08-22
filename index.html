@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>G3 LINK - Connecting Drivers &amp; Dispatchers</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
    <style>
     :root {
       --red:       #d92530;
@@ -1076,9 +1077,12 @@
        JAVASCRIPT
   ═══════════════════════════════════════════════ -->
   <script>
-    // Google Sheets Integration
-    const SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
-    const CLIENT_SCRIPT_URL = "PASTE_YOUR_CLIENT_REGISTRATION_URL_HERE";
+    // ── Supabase ──────────────────────────────────
+    const { createClient } = supabase;
+    const sb = createClient(
+      'https://mzfxwlfjbbnxvgxpuavn.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16Znh3bGZqYmJueHZneHB1YXZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MDU5MzksImV4cCI6MjEwMjk4MTkzOX0.UZBJ8LmXd3a-hYF4jq8WUmbnz_ZISy02MRLB0z26mhc'
+    );
 
     // USA States
     const USA_STATES = [
@@ -1112,26 +1116,43 @@
       document.getElementById('loginModal').classList.remove('hidden');
     }
 
-    function handleEmployeeLogin(event) {
+    async function handleEmployeeLogin(event) {
       event.preventDefault();
-      const email = event.target.employeeEmail.value.trim().toLowerCase();
-      const pass  = event.target.password.value.trim();
-      const errEl = document.getElementById('loginError');
+      const email  = event.target.employeeEmail.value.trim().toLowerCase();
+      const pass   = event.target.password.value.trim();
+      const errEl  = document.getElementById('loginError');
+      const btn    = event.target.querySelector('button[type="submit"]');
       errEl.classList.add('hidden');
+      btn.textContent = 'Logging in...';
+      btn.disabled = true;
 
-      if (EMPLOYEE_CREDENTIALS[email] && EMPLOYEE_CREDENTIALS[email].password === pass) {
-        currentEmployee = { id: EMPLOYEE_CREDENTIALS[email].id, email, name: EMPLOYEE_CREDENTIALS[email].name };
+      try {
+        const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+        if (error) throw error;
+
+        // Fetch employee profile from employees table
+        const { data: emp } = await sb.from('employees').select('name, employee_id').eq('email', email).single();
+        currentEmployee = {
+          email,
+          name: emp ? emp.name : email,
+          id:   emp ? emp.employee_id : 'EMP'
+        };
+
         document.getElementById('loginModal').classList.add('hidden');
         document.getElementById('dashEmployeeName').textContent = currentEmployee.name;
         document.getElementById('dashboardModal').classList.remove('hidden');
         event.target.reset();
-      } else {
-        errEl.textContent = 'Invalid email or password. Please try again.';
+      } catch (err) {
+        errEl.textContent = err.message || 'Invalid email or password. Please try again.';
         errEl.classList.remove('hidden');
+      } finally {
+        btn.textContent = 'Login';
+        btn.disabled = false;
       }
     }
 
-    function employeeLogout() {
+    async function employeeLogout() {
+      await sb.auth.signOut();
       currentEmployee = null;
       document.getElementById('dashboardModal').classList.add('hidden');
       document.getElementById('employeeLoginForm').reset();
@@ -1175,8 +1196,50 @@
     async function handleClientRegistration(event) {
       event.preventDefault();
       if (!currentEmployee) return;
-      showSuccessModal();
-      event.target.reset();
+
+      const fd = new FormData(event.target);
+      const btn = event.target.querySelector('button[type="submit"]');
+      btn.textContent = 'Saving...';
+      btn.disabled = true;
+
+      try {
+        const { error } = await sb.from('client_registrations').insert({
+          shipper_company:      fd.get('shipperCompanyName'),
+          shipper_contact:      fd.get('shipperContactName'),
+          shipper_phone:        fd.get('shipperPhone'),
+          shipper_email:        fd.get('shipperEmail'),
+          shipper_street:       fd.get('shipperStreet'),
+          shipper_city:         fd.get('shipperCity'),
+          shipper_country:      fd.get('shipperCountry'),
+          shipper_state:        fd.get('shipperState'),
+          shipper_zip:          fd.get('shipperZip'),
+          shipper_website:      fd.get('shipperWebsite'),
+          shipper_trailer_type: fd.get('shipperTrailerType'),
+          shipper_load_desc:    fd.get('shipperLoadDescription'),
+          receiver_company:     fd.get('receiverCompanyName'),
+          receiver_contact:     fd.get('receiverContactName'),
+          receiver_phone:       fd.get('receiverPhone'),
+          receiver_email:       fd.get('receiverEmail'),
+          receiver_street:      fd.get('receiverStreet'),
+          receiver_city:        fd.get('receiverCity'),
+          receiver_country:     fd.get('receiverCountry'),
+          receiver_state:       fd.get('receiverState'),
+          receiver_zip:         fd.get('receiverZip'),
+          receiver_website:     fd.get('receiverWebsite'),
+          receiver_trailer_type:fd.get('receiverTrailerType'),
+          receiver_load_desc:   fd.get('receiverLoadDescription'),
+          registered_by:        currentEmployee.email
+        });
+        if (error) throw error;
+        showSuccessModal();
+        event.target.reset();
+      } catch (err) {
+        console.error('Client registration error:', err);
+        alert('Failed to save: ' + (err.message || 'Please try again.'));
+      } finally {
+        btn.textContent = 'Register Client';
+        btn.disabled = false;
+      }
     }
     function showSuccessModal() {
       document.getElementById('successModal').classList.remove('hidden');
@@ -1246,11 +1309,39 @@
       }
 
       const fd = new FormData(event.target);
+      const freightTypes = Array.from(freightChecked).map(c => c.value).join(', ');
+
+      // Submit button feedback
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const origText = submitBtn.textContent;
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+
       try {
-        await fetch(SCRIPT_URL, { method: "POST", body: fd, mode: "no-cors" });
+        const { error } = await sb.from('shipper_registrations').insert({
+          company_name:   fd.get('companyName'),
+          contact_name:   fd.get('contactName'),
+          email:          fd.get('email'),
+          phone:          fd.get('phone'),
+          business_type:  fd.get('businessType'),
+          street:         fd.get('street'),
+          address_line2:  fd.get('addressLine2'),
+          city:           fd.get('city'),
+          province_state: fd.get('provinceState'),
+          postal_code:    fd.get('postalCode'),
+          country:        fd.get('country'),
+          freight_types:  freightTypes,
+          locations:      fd.get('locations'),
+          frequency:      fd.get('frequency'),
+          comments:       fd.get('comments'),
+          password:       pwd
+        });
+
+        if (error) throw error;
+
         const modal = document.getElementById('registerModal');
         modal.innerHTML = `
-          <div class="bg-white rounded-2xl p-10 max-w-md w-full mx-4 text-center shadow-2xl">
+          <div class="bg-white rounded-2xl p-10 max-w-md w-full mx-auto text-center shadow-2xl">
             <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -1266,7 +1357,10 @@
           </div>`;
         event.target.reset();
       } catch (err) {
-        console.error(err);
+        console.error('Registration error:', err);
+        submitBtn.textContent = origText;
+        submitBtn.disabled = false;
+        alert('Registration failed: ' + (err.message || 'Please try again.'));
       }
     }
 
