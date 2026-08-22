@@ -672,7 +672,7 @@
 
     <!-- Scrollable form body -->
     <div class="overflow-y-auto flex-1 px-8 py-6">
-     <form id="registerForm" onsubmit="handleRegister(event)">
+     <form id="registerForm" onsubmit="handleRegister(event)" novalidate>
 
       <!-- Company Info -->
       <div class="mb-5">
@@ -680,23 +680,67 @@
        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Company Name <span class="text-red-500">*</span></label>
-         <input type="text" name="companyName" placeholder="Your company name" required class="modal-input">
+         <input type="text" name="companyName" id="companyName" placeholder="Your company name" required
+                class="modal-input" oninput="clearErr('companyName')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-companyName">Company name is required.</p>
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Contact Person Name <span class="text-red-500">*</span></label>
-         <input type="text" name="contactName" placeholder="Full name" required class="modal-input">
+         <input type="text" name="contactName" id="contactName" placeholder="Full name" required
+                class="modal-input" oninput="clearErr('contactName')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-contactName">Contact name is required.</p>
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Email Address <span class="text-red-500">*</span></label>
-         <input type="email" name="email" placeholder="email@company.com" required class="modal-input">
+         <input type="email" name="email" id="regEmail" placeholder="email@company.com" required
+                class="modal-input" oninput="clearErr('regEmail')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regEmail">Enter a valid email address.</p>
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Phone Number <span class="text-red-500">*</span></label>
-         <input type="tel" name="phone" placeholder="+1 (000) 000-0000" required class="modal-input">
+         <div class="flex gap-2">
+          <select name="phoneCode" id="phoneCode" class="modal-input" style="width:130px;flex-shrink:0;">
+           <option value="+1">🇨🇦 +1</option>
+           <option value="+1">🇺🇸 +1</option>
+           <option value="+44">🇬🇧 +44</option>
+           <option value="+91">🇮🇳 +91</option>
+           <option value="+61">🇦🇺 +61</option>
+           <option value="+49">🇩🇪 +49</option>
+           <option value="+33">🇫🇷 +33</option>
+           <option value="+86">🇨🇳 +86</option>
+           <option value="+81">🇯🇵 +81</option>
+           <option value="+55">🇧🇷 +55</option>
+           <option value="+52">🇲🇽 +52</option>
+           <option value="+27">🇿🇦 +27</option>
+           <option value="+234">🇳🇬 +234</option>
+           <option value="+254">🇰🇪 +254</option>
+           <option value="+971">🇦🇪 +971</option>
+           <option value="+92">🇵🇰 +92</option>
+           <option value="+880">🇧🇩 +880</option>
+           <option value="+94">🇱🇰 +94</option>
+           <option value="+63">🇵🇭 +63</option>
+           <option value="+62">🇮🇩 +62</option>
+           <option value="+60">🇲🇾 +60</option>
+           <option value="+65">🇸🇬 +65</option>
+           <option value="+64">🇳🇿 +64</option>
+           <option value="+353">🇮🇪 +353</option>
+           <option value="+31">🇳🇱 +31</option>
+           <option value="+34">🇪🇸 +34</option>
+           <option value="+39">🇮🇹 +39</option>
+           <option value="+7">🇷🇺 +7</option>
+           <option value="+82">🇰🇷 +82</option>
+           <option value="+20">🇪🇬 +20</option>
+          </select>
+          <input type="tel" name="phone" id="regPhone" placeholder="000 000 0000" required
+                 class="modal-input flex-1" oninput="clearErr('regPhone')">
+         </div>
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regPhone">Enter a valid phone number (digits only, 7–15 digits).</p>
         </div>
         <div class="md:col-span-2">
          <label class="block text-gray-700 text-sm font-semibold mb-1">Type of Business <span class="text-red-500">*</span></label>
-         <input type="text" name="businessType" placeholder="e.g. Manufacturer, Retailer, Distributor..." required class="modal-input">
+         <input type="text" name="businessType" id="businessType" placeholder="e.g. Manufacturer, Retailer, Distributor..." required
+                class="modal-input" oninput="clearErr('businessType')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-businessType">Business type is required.</p>
         </div>
        </div>
       </div>
@@ -707,7 +751,9 @@
        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="md:col-span-2">
          <label class="block text-gray-700 text-sm font-semibold mb-1">Street Address <span class="text-red-500">*</span></label>
-         <input type="text" name="street" placeholder="Street address" required class="modal-input">
+         <input type="text" name="street" id="street" placeholder="Street address" required
+                class="modal-input" oninput="clearErr('street')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-street">Street address is required.</p>
         </div>
         <div class="md:col-span-2">
          <label class="block text-gray-700 text-sm font-semibold mb-1">Address Line 2</label>
@@ -715,24 +761,57 @@
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">City <span class="text-red-500">*</span></label>
-         <input type="text" name="city" placeholder="City" required class="modal-input">
+         <input type="text" name="city" id="city" placeholder="City" required
+                class="modal-input" oninput="clearErr('city')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-city">City is required.</p>
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Province / State <span class="text-red-500">*</span></label>
-         <input type="text" name="provinceState" placeholder="Province or State" required class="modal-input">
+         <input type="text" name="provinceState" id="provinceState" placeholder="Province or State" required
+                class="modal-input" oninput="clearErr('provinceState')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-provinceState">Province/State is required.</p>
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Postal / ZIP Code <span class="text-red-500">*</span></label>
-         <input type="text" name="postalCode" placeholder="Postal or ZIP code" required class="modal-input">
+         <input type="text" name="postalCode" id="postalCode" placeholder="Postal or ZIP code" required
+                class="modal-input" oninput="clearErr('postalCode')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-postalCode">Postal/ZIP code is required.</p>
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Country <span class="text-red-500">*</span></label>
-         <select name="country" required class="modal-input">
+         <select name="country" id="regCountry" required class="modal-input" onchange="clearErr('regCountry')">
           <option value="">Select country</option>
-          <option value="Canada">Canada</option>
-          <option value="USA">United States</option>
-          <option value="Other">Other</option>
+          <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Andorra</option><option>Angola</option>
+          <option>Argentina</option><option>Armenia</option><option>Australia</option><option>Austria</option><option>Azerbaijan</option>
+          <option>Bahamas</option><option>Bahrain</option><option>Bangladesh</option><option>Belarus</option><option>Belgium</option>
+          <option>Belize</option><option>Benin</option><option>Bolivia</option><option>Bosnia and Herzegovina</option><option>Botswana</option>
+          <option>Brazil</option><option>Brunei</option><option>Bulgaria</option><option>Burkina Faso</option><option>Burundi</option>
+          <option>Cambodia</option><option>Cameroon</option><option selected>Canada</option><option>Chad</option><option>Chile</option>
+          <option>China</option><option>Colombia</option><option>Congo</option><option>Costa Rica</option><option>Croatia</option>
+          <option>Cuba</option><option>Cyprus</option><option>Czech Republic</option><option>Denmark</option><option>Dominican Republic</option>
+          <option>Ecuador</option><option>Egypt</option><option>El Salvador</option><option>Estonia</option><option>Ethiopia</option>
+          <option>Finland</option><option>France</option><option>Georgia</option><option>Germany</option><option>Ghana</option>
+          <option>Greece</option><option>Guatemala</option><option>Haiti</option><option>Honduras</option><option>Hungary</option>
+          <option>Iceland</option><option>India</option><option>Indonesia</option><option>Iran</option><option>Iraq</option>
+          <option>Ireland</option><option>Israel</option><option>Italy</option><option>Jamaica</option><option>Japan</option>
+          <option>Jordan</option><option>Kazakhstan</option><option>Kenya</option><option>Kuwait</option><option>Kyrgyzstan</option>
+          <option>Latvia</option><option>Lebanon</option><option>Libya</option><option>Lithuania</option><option>Luxembourg</option>
+          <option>Malaysia</option><option>Maldives</option><option>Mali</option><option>Malta</option><option>Mexico</option>
+          <option>Moldova</option><option>Mongolia</option><option>Morocco</option><option>Mozambique</option><option>Myanmar</option>
+          <option>Nepal</option><option>Netherlands</option><option>New Zealand</option><option>Nicaragua</option><option>Niger</option>
+          <option>Nigeria</option><option>North Korea</option><option>Norway</option><option>Oman</option><option>Pakistan</option>
+          <option>Panama</option><option>Paraguay</option><option>Peru</option><option>Philippines</option><option>Poland</option>
+          <option>Portugal</option><option>Qatar</option><option>Romania</option><option>Russia</option><option>Rwanda</option>
+          <option>Saudi Arabia</option><option>Senegal</option><option>Serbia</option><option>Sierra Leone</option><option>Singapore</option>
+          <option>Slovakia</option><option>Slovenia</option><option>Somalia</option><option>South Africa</option><option>South Korea</option>
+          <option>South Sudan</option><option>Spain</option><option>Sri Lanka</option><option>Sudan</option><option>Sweden</option>
+          <option>Switzerland</option><option>Syria</option><option>Taiwan</option><option>Tajikistan</option><option>Tanzania</option>
+          <option>Thailand</option><option>Togo</option><option>Trinidad and Tobago</option><option>Tunisia</option><option>Turkey</option>
+          <option>Turkmenistan</option><option>Uganda</option><option>Ukraine</option><option>United Arab Emirates</option>
+          <option>United Kingdom</option><option>United States</option><option>Uruguay</option><option>Uzbekistan</option>
+          <option>Venezuela</option><option>Vietnam</option><option>Yemen</option><option>Zambia</option><option>Zimbabwe</option>
          </select>
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regCountry">Please select a country.</p>
         </div>
        </div>
       </div>
@@ -742,7 +821,7 @@
        <h4 class="text-sm font-bold uppercase tracking-wider mb-3" style="color:var(--red)">Freight Details</h4>
        <div class="mb-4">
         <label class="block text-gray-700 text-sm font-semibold mb-2">Type of Freight You Normally Ship <span class="text-red-500">*</span></label>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-2" id="freightGrid">
          <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors">
           <input type="checkbox" name="freightType" value="Dry Van" class="accent-red-600">
           <span class="text-sm text-gray-700">Dry Van</span>
@@ -780,25 +859,26 @@
           <span class="text-sm text-gray-700">Other</span>
          </label>
         </div>
+        <p class="field-err hidden text-red-500 text-xs mt-1" id="err-freightType">Please select at least one freight type.</p>
        </div>
        <div class="mb-4">
         <label class="block text-gray-700 text-sm font-semibold mb-1">Primary Pickup &amp; Delivery Locations <span class="text-red-500">*</span></label>
-        <input type="text" name="locations" placeholder="e.g. Toronto, ON to Chicago, IL" required class="modal-input">
+        <input type="text" name="locations" id="locations" placeholder="e.g. Toronto, ON to Chicago, IL" required
+               class="modal-input" oninput="clearErr('locations')">
+        <p class="field-err hidden text-red-500 text-xs mt-1" id="err-locations">Please enter pickup and delivery locations.</p>
        </div>
        <div class="mb-4">
         <label class="block text-gray-700 text-sm font-semibold mb-1">How Frequently Do You Require Transportation? <span class="text-red-500">*</span></label>
-        <select name="frequency" required class="modal-input">
+        <select name="frequency" id="frequency" required class="modal-input" onchange="clearErr('frequency')">
          <option value="">Select frequency</option>
-         <option value="Daily">Daily</option>
-         <option value="Weekly">Weekly</option>
-         <option value="Bi-Weekly">Bi-Weekly</option>
-         <option value="Monthly">Monthly</option>
-         <option value="As Needed">As Needed</option>
+         <option>Daily</option><option>Weekly</option><option>Bi-Weekly</option><option>Monthly</option><option>As Needed</option>
         </select>
+        <p class="field-err hidden text-red-500 text-xs mt-1" id="err-frequency">Please select a frequency.</p>
        </div>
        <div>
         <label class="block text-gray-700 text-sm font-semibold mb-1">Additional Requirements or Comments</label>
-        <textarea name="comments" rows="3" placeholder="Any additional transportation requirements or comments..." class="modal-input" style="resize:vertical;"></textarea>
+        <textarea name="comments" rows="3" placeholder="Any additional transportation requirements or comments..."
+                  class="modal-input" style="resize:vertical;"></textarea>
        </div>
       </div>
 
@@ -808,19 +888,29 @@
        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Password <span class="text-red-500">*</span></label>
-         <input type="password" name="password" id="regPassword" placeholder="Create a password" required class="modal-input">
+         <input type="password" name="password" id="regPassword" placeholder="Min 8 characters" required
+                class="modal-input" oninput="checkPasswordStrength(); clearErr('regPassword')">
+         <!-- Strength bar -->
+         <div class="mt-2 h-1.5 rounded-full bg-gray-200 overflow-hidden">
+          <div id="strengthBar" class="h-full rounded-full transition-all duration-300" style="width:0%;background:#d92530;"></div>
+         </div>
+         <p id="strengthText" class="text-xs mt-1 text-gray-400"></p>
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regPassword">Password must be at least 8 characters.</p>
         </div>
         <div>
          <label class="block text-gray-700 text-sm font-semibold mb-1">Confirm Password <span class="text-red-500">*</span></label>
-         <input type="password" name="confirmPassword" id="regConfirmPassword" placeholder="Repeat your password" required class="modal-input">
+         <input type="password" name="confirmPassword" id="regConfirmPassword" placeholder="Repeat your password" required
+                class="modal-input" oninput="clearErr('regConfirmPassword')">
+         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regConfirmPassword">Passwords do not match.</p>
         </div>
        </div>
-       <p id="passwordError" class="text-red-500 text-xs mt-2 hidden">Passwords do not match.</p>
       </div>
+
+      <!-- General form error -->
+      <p id="formError" class="hidden text-red-600 text-sm text-center mb-3 p-2 bg-red-50 rounded-lg"></p>
 
       <button type="submit" class="btn-primary w-full text-base mb-4">Create Account</button>
 
-      <!-- Already have account -->
       <p class="text-center text-sm text-gray-500">
        Already have an account?
        <a href="#" onclick="closeModal('registerModal')" class="font-semibold hover:underline" style="color:var(--red)">Sign In</a>
@@ -1286,32 +1376,97 @@
       document.getElementById(modalId).classList.add('hidden');
     }
 
+    // ── Validation helpers ────────────────────────
+    function showErr(id, msg) {
+      const el = document.getElementById('err-' + id);
+      const input = document.getElementById(id) || document.querySelector('[name="' + id + '"]');
+      if (el) { el.textContent = msg || el.textContent; el.classList.remove('hidden'); }
+      if (input) input.classList.add('border-red-400');
+    }
+    function clearErr(id) {
+      const el = document.getElementById('err-' + id);
+      const input = document.getElementById(id) || document.querySelector('[name="' + id + '"]');
+      if (el) el.classList.add('hidden');
+      if (input) input.classList.remove('border-red-400');
+    }
+    function checkPasswordStrength() {
+      const pwd = document.getElementById('regPassword').value;
+      const bar = document.getElementById('strengthBar');
+      const txt = document.getElementById('strengthText');
+      if (!bar) return;
+      let score = 0;
+      if (pwd.length >= 8)  score++;
+      if (/[A-Z]/.test(pwd)) score++;
+      if (/[0-9]/.test(pwd)) score++;
+      if (/[^A-Za-z0-9]/.test(pwd)) score++;
+      const levels = [
+        { w:'0%',   c:'#d92530', t:'' },
+        { w:'25%',  c:'#d92530', t:'Weak' },
+        { w:'50%',  c:'#f97316', t:'Fair' },
+        { w:'75%',  c:'#eab308', t:'Good' },
+        { w:'100%', c:'#22c55e', t:'Strong' }
+      ];
+      bar.style.width = levels[score].w;
+      bar.style.background = levels[score].c;
+      txt.textContent = levels[score].t;
+      txt.style.color = levels[score].c;
+    }
+
     // Registration form handler
     async function handleRegister(event) {
       event.preventDefault();
+      let valid = true;
 
-      // Password match validation
-      const pwd  = document.getElementById('regPassword').value;
-      const cpwd = document.getElementById('regConfirmPassword').value;
-      const pwdErr = document.getElementById('passwordError');
-      if (pwd !== cpwd) {
-        pwdErr.classList.remove('hidden');
-        document.getElementById('regConfirmPassword').focus();
-        return;
-      }
-      pwdErr.classList.add('hidden');
+      // Helper
+      const val = id => (document.getElementById(id) || document.querySelector('[name="'+id+'"]'))?.value?.trim() || '';
 
-      // At least one freight type selected
+      // Company name
+      if (!val('companyName')) { showErr('companyName'); valid = false; }
+      // Contact name
+      if (!val('contactName')) { showErr('contactName'); valid = false; }
+      // Email
+      const emailVal = val('regEmail');
+      if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { showErr('regEmail'); valid = false; }
+      // Phone — digits only, 7–15 chars
+      const phoneVal = val('regPhone').replace(/[\s\-().]/g, '');
+      if (!phoneVal || !/^\d{7,15}$/.test(phoneVal)) { showErr('regPhone'); valid = false; }
+      // Business type
+      if (!val('businessType')) { showErr('businessType'); valid = false; }
+      // Street
+      if (!val('street')) { showErr('street'); valid = false; }
+      // City
+      if (!val('city')) { showErr('city'); valid = false; }
+      // Province/State
+      if (!val('provinceState')) { showErr('provinceState'); valid = false; }
+      // Postal code
+      if (!val('postalCode')) { showErr('postalCode'); valid = false; }
+      // Country
+      if (!val('regCountry')) { showErr('regCountry'); valid = false; }
+      // Freight type
       const freightChecked = event.target.querySelectorAll('input[name="freightType"]:checked');
-      if (freightChecked.length === 0) {
-        alert('Please select at least one freight type.');
+      if (freightChecked.length === 0) { showErr('freightType', 'Please select at least one freight type.'); valid = false; }
+      // Locations
+      if (!val('locations')) { showErr('locations'); valid = false; }
+      // Frequency
+      if (!val('frequency')) { showErr('frequency'); valid = false; }
+      // Password length
+      const pwd = document.getElementById('regPassword').value;
+      if (pwd.length < 8) { showErr('regPassword', 'Password must be at least 8 characters.'); valid = false; }
+      // Confirm password
+      const cpwd = document.getElementById('regConfirmPassword').value;
+      if (pwd !== cpwd) { showErr('regConfirmPassword', 'Passwords do not match.'); valid = false; }
+
+      if (!valid) {
+        // Scroll to first error
+        const firstErr = document.querySelector('.field-err:not(.hidden)');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
 
       const fd = new FormData(event.target);
       const freightTypes = Array.from(freightChecked).map(c => c.value).join(', ');
+      const fullPhone = fd.get('phoneCode') + ' ' + phoneVal;
 
-      // Submit button feedback
       const submitBtn = event.target.querySelector('button[type="submit"]');
       const origText = submitBtn.textContent;
       submitBtn.textContent = 'Submitting...';
@@ -1321,22 +1476,21 @@
         const { error } = await sb.from('shipper_registrations').insert({
           company_name:   fd.get('companyName'),
           contact_name:   fd.get('contactName'),
-          email:          fd.get('email'),
-          phone:          fd.get('phone'),
+          email:          emailVal,
+          phone:          fullPhone,
           business_type:  fd.get('businessType'),
           street:         fd.get('street'),
           address_line2:  fd.get('addressLine2'),
           city:           fd.get('city'),
           province_state: fd.get('provinceState'),
           postal_code:    fd.get('postalCode'),
-          country:        fd.get('country'),
+          country:        fd.get('regCountry'),
           freight_types:  freightTypes,
           locations:      fd.get('locations'),
           frequency:      fd.get('frequency'),
           comments:       fd.get('comments'),
           password:       pwd
         });
-
         if (error) throw error;
 
         const modal = document.getElementById('registerModal');
@@ -1360,7 +1514,9 @@
         console.error('Registration error:', err);
         submitBtn.textContent = origText;
         submitBtn.disabled = false;
-        alert('Registration failed: ' + (err.message || 'Please try again.'));
+        const formErr = document.getElementById('formError');
+        formErr.textContent = 'Registration failed: ' + (err.message || 'Please try again.');
+        formErr.classList.remove('hidden');
       }
     }
 
