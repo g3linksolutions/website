@@ -1093,7 +1093,7 @@
       </div>
       <p id="formError" class="hidden text-red-600 text-sm text-center mb-3 p-2 bg-red-50 rounded-lg"></p>
       <button type="submit" class="btn-primary w-full text-base mb-4">Create Account</button>
-      <p class="text-center text-sm text-gray-500">Already have an account? <a href="#" onclick="closeModal('registerModal')" class="font-semibold hover:underline" style="color:var(--red)">Sign In</a></p>
+      <p class="text-center text-sm text-gray-500">Already have an account? <a href="#" onclick="closeModal('registerModal'); showShipperLogin()" class="font-semibold hover:underline" style="color:var(--red)">Sign In</a></p>
      </form>
     </div>
    </div>
@@ -1112,6 +1112,58 @@
     <button onclick="document.getElementById('regSuccessBanner').classList.add('hidden')"
             style="background:linear-gradient(135deg,#d92530,#b01c26)"
             class="text-white px-8 py-2 rounded-lg font-semibold hover:opacity-90 transition-all">Close</button>
+   </div>
+  </div>
+
+  <!-- SHIPPER LOGIN MODAL -->
+  <div id="shipperLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto">
+    <div class="flex justify-between items-center px-8 pt-7 pb-4 border-b border-gray-100">
+     <div>
+      <h3 class="text-xl font-bold" style="color:var(--black)">Shipper Sign In</h3>
+      <p class="text-xs text-gray-400">Access your G3 Link account</p>
+     </div>
+     <button onclick="closeModal('shipperLoginModal')" class="text-gray-400 hover:text-gray-600 transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+     </button>
+    </div>
+    <div class="px-8 py-6">
+     <form id="shipperLoginForm" onsubmit="handleShipperLogin(event)">
+      <div class="mb-4">
+       <label class="block text-gray-700 text-sm font-semibold mb-1">Email Address</label>
+       <input type="email" name="shipperEmail" placeholder="Enter your registered email" required class="modal-input">
+      </div>
+      <div class="mb-6">
+       <label class="block text-gray-700 text-sm font-semibold mb-1">Password</label>
+       <input type="password" name="shipperPassword" placeholder="Enter your password" required class="modal-input">
+      </div>
+      <div id="shipperLoginError" class="hidden mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm text-center"></div>
+      <button type="submit" class="btn-primary w-full text-base">Sign In</button>
+     </form>
+     <p class="text-center text-sm text-gray-500 mt-4">
+      Don't have an account?
+      <a href="#" onclick="closeModal('shipperLoginModal'); showRegister()" class="font-semibold hover:underline" style="color:var(--red)">Register</a>
+     </p>
+    </div>
+   </div>
+  </div>
+
+  <!-- Shipper Welcome Banner -->
+  <div id="shipperWelcomeBanner" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+   <div class="bg-white rounded-2xl p-10 max-w-md w-full mx-auto text-center shadow-2xl">
+    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+     <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+     </svg>
+    </div>
+    <h3 class="text-xl font-bold mb-2" style="color:var(--black)">Welcome Back!</h3>
+    <p id="shipperWelcomeName" class="text-gray-600 mb-2"></p>
+    <p class="text-gray-500 text-sm mb-6">You are now signed in to your G3 Link account.</p>
+    <button onclick="document.getElementById('shipperWelcomeBanner').classList.add('hidden')"
+            style="background:linear-gradient(135deg,#d92530,#b01c26)"
+            class="text-white px-8 py-2 rounded-lg font-semibold hover:opacity-90 transition-all">Continue</button>
    </div>
   </div>
 
@@ -1347,6 +1399,61 @@
     // ── Login modal ──────────────────────────────
     function showLoginModal() {
       document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    function showShipperLogin() {
+      const form = document.getElementById('shipperLoginForm');
+      if (form) form.reset();
+      const err = document.getElementById('shipperLoginError');
+      if (err) err.classList.add('hidden');
+      document.getElementById('shipperLoginModal').classList.remove('hidden');
+    }
+
+    async function handleShipperLogin(event) {
+      event.preventDefault();
+      const email    = event.target.shipperEmail.value.trim().toLowerCase();
+      const password = event.target.shipperPassword.value.trim();
+      const errEl    = document.getElementById('shipperLoginError');
+      const btn      = event.target.querySelector('button[type="submit"]');
+      errEl.classList.add('hidden');
+      btn.textContent = 'Signing in...';
+      btn.disabled = true;
+
+      try {
+        // Look up user by email and password
+        const { data, error } = await sb
+          .from('shipper_registrations')
+          .select('id, contact_name, company_name, authorized')
+          .eq('email', email)
+          .eq('password', password)
+          .maybeSingle();
+
+        if (error) throw error;
+
+        if (!data) {
+          // No matching email+password
+          errEl.textContent = 'Invalid email or password. Please try again.';
+          errEl.classList.remove('hidden');
+        } else if (!data.authorized) {
+          // Account exists but not yet authorized
+          errEl.textContent = 'Your account is pending authorization. Please wait for approval before signing in.';
+          errEl.classList.remove('hidden');
+        } else {
+          // Authorized — welcome!
+          document.getElementById('shipperLoginModal').classList.add('hidden');
+          document.getElementById('shipperWelcomeName').textContent =
+            `Welcome, ${data.contact_name} (${data.company_name})`;
+          document.getElementById('shipperWelcomeBanner').classList.remove('hidden');
+          event.target.reset();
+        }
+      } catch (err) {
+        console.error('Shipper login error:', err);
+        errEl.textContent = 'Login failed. Please try again.';
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.textContent = 'Sign In';
+        btn.disabled = false;
+      }
     }
 
     async function handleEmployeeLogin(event) {
