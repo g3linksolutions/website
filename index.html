@@ -255,7 +255,7 @@
       <a href="#contact"    class="nav-link text-gray-300 hover:text-red-500 px-3 py-2 rounded-md text-sm font-medium transition-colors">CONTACT</a>
       <button onclick="showRegister()"
               class="ml-3 btn-primary text-sm px-4 py-2">REGISTER</button>
-      <button onclick="showLoginModal()"
+      <button onclick="showShipperLogin()"
               class="ml-2 text-sm px-4 py-2 rounded-md font-semibold text-white transition-colors"
               style="background:var(--black-mid);border:2px solid rgba(255,255,255,0.3);"
               onmouseover="this.style.background='var(--black-light)'"
@@ -284,7 +284,7 @@
      <a href="#contact"   class="nav-link block text-gray-300 hover:text-red-500 px-3 py-2 rounded-md text-base font-medium">CONTACT</a>
      <button onclick="showRegister()"
              class="w-full text-left btn-primary mt-2 text-sm px-3 py-2">REGISTER</button>
-     <button onclick="showLoginModal()"
+     <button onclick="showShipperLogin()"
              class="w-full text-left mt-2 text-sm px-3 py-2 rounded-md font-semibold text-white"
              style="background:var(--black-mid);border:2px solid rgba(255,255,255,0.3);">LOGIN</button>
     </div>
@@ -1420,39 +1420,53 @@
       btn.disabled = true;
 
       try {
-        // Step 1: check email exists
-        const { data: emailCheck, error: emailErr } = await sb
-          .from('shipper_registrations')
-          .select('id, contact_name, company_name, password, authorized')
-          .eq('email', email)
-          .maybeSingle();
+        // Use direct REST API to bypass any RLS issues
+        const SUPABASE_URL = 'https://mzfxwlfjbbnxvgxpuavn.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16Znh3bGZqYmJueHZneHB1YXZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MDU5MzksImV4cCI6MjEwMjk4MTkzOX0.UZBJ8LmXd3a-hYF4jq8WUmbnz_ZISy02MRLB0z26mhc';
 
-        if (emailErr) throw emailErr;
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/shipper_registrations?email=eq.${encodeURIComponent(email)}&select=id,contact_name,company_name,password,authorized`,
+          {
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_KEY,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
 
-        if (!emailCheck) {
+        const rows = await res.json();
+
+        if (!res.ok) {
+          throw new Error(rows.message || rows.hint || JSON.stringify(rows));
+        }
+
+        if (!rows || rows.length === 0) {
           errEl.textContent = 'No account found with this email. Please register first.';
           errEl.classList.remove('hidden');
           return;
         }
 
-        // Step 2: check password
-        if (emailCheck.password !== password) {
+        const user = rows[0];
+
+        // Check password
+        if (user.password !== password) {
           errEl.textContent = 'Incorrect password. Please try again.';
           errEl.classList.remove('hidden');
           return;
         }
 
-        // Step 3: check authorization
-        if (!emailCheck.authorized) {
+        // Check authorization
+        if (!user.authorized) {
           errEl.textContent = 'Your account is pending authorization. Please wait for approval from G3 Link before signing in.';
           errEl.classList.remove('hidden');
           return;
         }
 
-        // All good — welcome!
+        // Success
         document.getElementById('shipperLoginModal').classList.add('hidden');
         document.getElementById('shipperWelcomeName').textContent =
-          `Welcome, ${emailCheck.contact_name} (${emailCheck.company_name})`;
+          `Welcome, ${user.contact_name} (${user.company_name})`;
         document.getElementById('shipperWelcomeBanner').classList.remove('hidden');
         event.target.reset();
 
