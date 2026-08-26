@@ -1389,18 +1389,20 @@
       'Quebec','Saskatchewan','Yukon'
     ];
 
-    // Employee credentials
-    const EMPLOYEE_CREDENTIALS = {
-      "john.smith@rklogixhub.com":    { password: "pass123", name: "John Smith",    id: "EMP001" },
-      "sarah.johnson@rklogixhub.com": { password: "pass456", name: "Sarah Johnson", id: "EMP002" },
-      "mike.davis@rklogixhub.com":    { password: "pass789", name: "Mike Davis",    id: "EMP003" }
-    };
-
     let currentEmployee = null;
 
     // ── Login modal ──────────────────────────────
     function showLoginModal() {
       document.getElementById('loginModal').classList.remove('hidden');
+    }
+
+    // ── Password hashing (SHA-256 via Web Crypto API) ─────────────────────────
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
     function showShipperLogin() {
@@ -1422,7 +1424,9 @@
       btn.disabled = true;
 
       try {
-        // Use direct REST API to bypass any RLS issues
+        // Hash the entered password before comparing
+        const hashedPassword = await hashPassword(password);
+
         const SUPABASE_URL = 'https://mzfxwlfjbbnxvgxpuavn.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im16Znh3bGZqYmJueHZneHB1YXZuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc0MDU5MzksImV4cCI6MjEwMjk4MTkzOX0.UZBJ8LmXd3a-hYF4jq8WUmbnz_ZISy02MRLB0z26mhc';
 
@@ -1451,8 +1455,8 @@
 
         const user = rows[0];
 
-        // Check password
-        if (user.password !== password) {
+        // Check password (compare hashes)
+        if (user.password !== hashedPassword) {
           errEl.textContent = 'Incorrect password. Please try again.';
           errEl.classList.remove('hidden');
           return;
@@ -1800,6 +1804,9 @@
       const freightTypes = Array.from(freightChecked).map(c => c.value).join(', ');
       const fullPhone = phoneCode + ' ' + phoneVal;
 
+      // Hash password before storing — never store plain text
+      const hashedPwd = await hashPassword(pwd);
+
       const submitBtn = event.target.querySelector('button[type="submit"]');
       const origText = submitBtn.textContent;
       submitBtn.textContent = 'Submitting...';
@@ -1854,7 +1861,7 @@
           freight_types:  freightTypes,
           frequency:      fd.get('frequency'),
           comments:       fd.get('comments'),
-          password:       pwd
+          password:       hashedPwd
         });
         if (error) throw error;
 
