@@ -951,24 +951,24 @@
        <h4 class="text-sm font-bold uppercase tracking-wider mb-3" style="color:var(--red)">Company Information</h4>
        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Company Name <span class="text-red-500">*</span></label>
-         <input type="text" name="companyName" id="companyName" placeholder="Your company name" required class="modal-input" oninput="clearErr('companyName')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="companyName">Company Name <span class="text-red-500">*</span></label>
+         <input type="text" name="companyName" id="companyName" placeholder="Your company name" required class="modal-input" oninput="clearErr('companyName')" autocomplete="organization">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-companyName">Company name is required.</p>
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Contact Person Name <span class="text-red-500">*</span></label>
-         <input type="text" name="contactName" id="contactName" placeholder="Full name" required class="modal-input" oninput="clearErr('contactName')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="contactName">Contact Person Name <span class="text-red-500">*</span></label>
+         <input type="text" name="contactName" id="contactName" placeholder="Full name" required class="modal-input" oninput="clearErr('contactName')" autocomplete="name">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-contactName">Contact name is required.</p>
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Email Address <span class="text-red-500">*</span></label>
-         <input type="email" name="email" id="regEmail" placeholder="email@company.com" required class="modal-input" oninput="clearErr('regEmail')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="regEmail">Email Address <span class="text-red-500">*</span></label>
+         <input type="email" name="email" id="regEmail" placeholder="email@company.com" required class="modal-input" oninput="clearErr('regEmail')" autocomplete="email">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regEmail">Enter a valid email address.</p>
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Phone Number <span class="text-red-500">*</span></label>
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="phoneCode">Phone Number <span class="text-red-500">*</span></label>
          <div class="flex gap-2">
-          <select name="phoneCode" id="phoneCode" class="modal-input" style="width:130px;flex-shrink:0;">
+          <select name="phoneCode" id="phoneCode" class="modal-input" style="width:130px;flex-shrink:0;" autocomplete="off">
            <option value="+1">🇨🇦 +1</option><option value="+1">🇺🇸 +1</option><option value="+44">🇬🇧 +44</option>
            <option value="+91">🇮🇳 +91</option><option value="+61">🇦🇺 +61</option><option value="+49">🇩🇪 +49</option>
            <option value="+33">🇫🇷 +33</option><option value="+86">🇨🇳 +86</option><option value="+81">🇯🇵 +81</option>
@@ -980,13 +980,13 @@
            <option value="+31">🇳🇱 +31</option><option value="+34">🇪🇸 +34</option><option value="+39">🇮🇹 +39</option>
            <option value="+7">🇷🇺 +7</option><option value="+82">🇰🇷 +82</option><option value="+20">🇪🇬 +20</option>
           </select>
-          <input type="tel" name="phone" id="regPhone" placeholder="000 000 0000" required class="modal-input flex-1" oninput="clearErr('regPhone')">
+          <input type="tel" name="phone" id="regPhone" placeholder="000 000 0000" required class="modal-input flex-1" oninput="clearErr('regPhone')" autocomplete="tel">
          </div>
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regPhone">Enter a valid phone number (7–15 digits).</p>
         </div>
         <div class="md:col-span-2">
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Type of Business <span class="text-red-500">*</span></label>
-         <input type="text" name="businessType" id="businessType" placeholder="e.g. Manufacturer, Retailer, Distributor..." required class="modal-input" oninput="clearErr('businessType')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="businessType">Type of Business <span class="text-red-500">*</span></label>
+         <input type="text" name="businessType" id="businessType" placeholder="e.g. Manufacturer, Retailer, Distributor..." required class="modal-input" oninput="clearErr('businessType')" autocomplete="organization-type">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-businessType">Business type is required.</p>
         </div>
        </div>
@@ -995,32 +995,32 @@
        <h4 class="text-sm font-bold uppercase tracking-wider mb-3" style="color:var(--red)">Company Address</h4>
        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="md:col-span-2">
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Street Address <span class="text-red-500">*</span></label>
-         <input type="text" name="street" id="street" placeholder="Street address" required class="modal-input" oninput="clearErr('street')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="street">Street Address <span class="text-red-500">*</span></label>
+         <input type="text" name="street" id="street" placeholder="Street address" required class="modal-input" oninput="clearErr('street')" autocomplete="street-address">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-street">Street address is required.</p>
         </div>
         <div class="md:col-span-2">
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Address Line 2</label>
-         <input type="text" name="addressLine2" placeholder="Suite, unit, building (optional)" class="modal-input">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="addressLine2">Address Line 2</label>
+         <input type="text" name="addressLine2" placeholder="Suite, unit, building (optional)" class="modal-input" autocomplete="address-line2">
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">City <span class="text-red-500">*</span></label>
-         <input type="text" name="city" id="city" placeholder="City" required class="modal-input" oninput="clearErr('city')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="city">City <span class="text-red-500">*</span></label>
+         <input type="text" name="city" id="city" placeholder="City" required class="modal-input" oninput="clearErr('city')" autocomplete="address-level2">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-city">City is required.</p>
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Province / State <span class="text-red-500">*</span></label>
-         <input type="text" name="provinceState" id="provinceState" placeholder="Province or State" required class="modal-input" oninput="clearErr('provinceState')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="provinceState">Province / State <span class="text-red-500">*</span></label>
+         <input type="text" name="provinceState" id="provinceState" placeholder="Province or State" required class="modal-input" oninput="clearErr('provinceState')" autocomplete="address-level1">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-provinceState">Province/State is required.</p>
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Postal / ZIP Code <span class="text-red-500">*</span></label>
-         <input type="text" name="postalCode" id="postalCode" placeholder="Postal or ZIP code" required class="modal-input" oninput="clearErr('postalCode')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="postalCode">Postal / ZIP Code <span class="text-red-500">*</span></label>
+         <input type="text" name="postalCode" id="postalCode" placeholder="Postal or ZIP code" required class="modal-input" oninput="clearErr('postalCode')" autocomplete="postal-code">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-postalCode">Postal/ZIP code is required.</p>
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Country <span class="text-red-500">*</span></label>
-         <select name="country" id="regCountry" required class="modal-input" onchange="clearErr('regCountry')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="regCountry">Country <span class="text-red-500">*</span></label>
+         <select name="country" id="regCountry" required class="modal-input" onchange="clearErr('regCountry')" autocomplete="off">
           <option value="">Select country</option>
           <option>Afghanistan</option><option>Albania</option><option>Algeria</option><option>Argentina</option><option>Armenia</option>
           <option>Australia</option><option>Austria</option><option>Azerbaijan</option><option>Bahrain</option><option>Bangladesh</option>
@@ -1049,46 +1049,46 @@
       <div class="mb-5">
        <h4 class="text-sm font-bold uppercase tracking-wider mb-3" style="color:var(--red)">Freight Details</h4>
        <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-semibold mb-2">Type of Freight You Normally Ship <span class="text-red-500">*</span></label>
+        <label class="block text-gray-700 text-sm font-semibold mb-2" for="freightType">Type of Freight You Normally Ship <span class="text-red-500">*</span></label>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-2" id="freightGrid">
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="Dry Van" class="accent-red-600"><span class="text-sm text-gray-700">Dry Van</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="Reefer" class="accent-red-600"><span class="text-sm text-gray-700">Reefer</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="FlatBed" class="accent-red-600"><span class="text-sm text-gray-700">FlatBed</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="LTL" class="accent-red-600"><span class="text-sm text-gray-700">LTL</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="FTL" class="accent-red-600"><span class="text-sm text-gray-700">FTL</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="Container/Drayage" class="accent-red-600"><span class="text-sm text-gray-700">Container / Drayage</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="Expedited" class="accent-red-600"><span class="text-sm text-gray-700">Expedited</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="Last Mile" class="accent-red-600"><span class="text-sm text-gray-700">Last Mile</span></label>
-         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors"><input type="checkbox" name="freightType" value="Other" class="accent-red-600"><span class="text-sm text-gray-700">Other</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="Dry Van" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">Dry Van</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="Reefer" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">Reefer</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="FlatBed" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">FlatBed</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="LTL" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">LTL</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="FTL" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">FTL</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="Container/Drayage" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">Container / Drayage</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="Expedited" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">Expedited</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="freightType"><input type="checkbox" name="freightType" value="Last Mile" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">Last Mile</span></label>
+         <label class="flex items-center gap-2 p-2 border border-gray-200 rounded-lg cursor-pointer hover:border-red-400 transition-colors" for="frequency"><input type="checkbox" name="freightType" value="Other" class="accent-red-600" autocomplete="off"><span class="text-sm text-gray-700">Other</span></label>
         </div>
         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-freightType">Please select at least one freight type.</p>
        </div>
        <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-semibold mb-1">How Frequently Do You Require Transportation? <span class="text-red-500">*</span></label>
-        <select name="frequency" id="frequency" required class="modal-input" onchange="clearErr('frequency')">
+        <label class="block text-gray-700 text-sm font-semibold mb-1" for="frequency">How Frequently Do You Require Transportation? <span class="text-red-500">*</span></label>
+        <select name="frequency" id="frequency" required class="modal-input" onchange="clearErr('frequency')" autocomplete="off">
          <option value="">Select frequency</option>
          <option>Daily</option><option>Weekly</option><option>Bi-Weekly</option><option>Monthly</option><option>As Needed</option>
         </select>
         <p class="field-err hidden text-red-500 text-xs mt-1" id="err-frequency">Please select a frequency.</p>
        </div>
        <div>
-        <label class="block text-gray-700 text-sm font-semibold mb-1">Additional Requirements or Comments</label>
-        <textarea name="comments" rows="3" placeholder="Any additional transportation requirements or comments..." class="modal-input" style="resize:vertical;"></textarea>
+        <label class="block text-gray-700 text-sm font-semibold mb-1" for="comments">Additional Requirements or Comments</label>
+        <textarea name="comments" rows="3" placeholder="Any additional transportation requirements or comments..." class="modal-input" style="resize:vertical;" autocomplete="off"></textarea>
        </div>
       </div>
       <div class="mb-6">
        <h4 class="text-sm font-bold uppercase tracking-wider mb-3" style="color:var(--red)">Account Security</h4>
        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Password <span class="text-red-500">*</span></label>
-         <input type="password" name="password" id="regPassword" placeholder="Min 8 characters" required class="modal-input" oninput="checkPasswordStrength(); clearErr('regPassword')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="regPassword">Password <span class="text-red-500">*</span></label>
+         <input type="password" name="password" id="regPassword" placeholder="Min 8 characters" required class="modal-input" oninput="checkPasswordStrength(); clearErr('regPassword')" autocomplete="current-password">
          <div class="mt-2 h-1.5 rounded-full bg-gray-200 overflow-hidden"><div id="strengthBar" class="h-full rounded-full transition-all duration-300" style="width:0%;background:#d92530;"></div></div>
          <p id="strengthText" class="text-xs mt-1 text-gray-400"></p>
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regPassword">Password must be at least 8 characters.</p>
         </div>
         <div>
-         <label class="block text-gray-700 text-sm font-semibold mb-1">Confirm Password <span class="text-red-500">*</span></label>
-         <input type="password" name="confirmPassword" id="regConfirmPassword" placeholder="Repeat your password" required class="modal-input" oninput="clearErr('regConfirmPassword')">
+         <label class="block text-gray-700 text-sm font-semibold mb-1" for="regConfirmPassword">Confirm Password <span class="text-red-500">*</span></label>
+         <input type="password" name="confirmPassword" id="regConfirmPassword" placeholder="Repeat your password" required class="modal-input" oninput="clearErr('regConfirmPassword')" autocomplete="current-password">
          <p class="field-err hidden text-red-500 text-xs mt-1" id="err-regConfirmPassword">Passwords do not match.</p>
         </div>
        </div>
@@ -1134,12 +1134,12 @@
     <div class="px-8 py-6">
      <form id="shipperLoginForm" onsubmit="handleShipperLogin(event)">
       <div class="mb-4">
-       <label class="block text-gray-700 text-sm font-semibold mb-1">Email Address</label>
-       <input type="email" name="shipperEmail" placeholder="Enter your registered email" required class="modal-input">
+       <label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperEmail">Email Address</label>
+       <input type="email" name="shipperEmail" placeholder="Enter your registered email" required class="modal-input" autocomplete="email">
       </div>
       <div class="mb-6">
-       <label class="block text-gray-700 text-sm font-semibold mb-1">Password</label>
-       <input type="password" name="shipperPassword" placeholder="Enter your password" required class="modal-input">
+       <label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperPassword">Password</label>
+       <input type="password" name="shipperPassword" placeholder="Enter your password" required class="modal-input" autocomplete="current-password">
       </div>
       <div id="shipperLoginError" class="hidden mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm text-center"></div>
       <button type="submit" class="btn-primary w-full text-base">Sign In</button>
@@ -1189,12 +1189,12 @@
     <div class="px-8 py-6">
      <form id="employeeLoginForm" onsubmit="handleEmployeeLogin(event)">
       <div class="mb-4">
-       <label class="block text-gray-700 text-sm font-semibold mb-1">Email Address</label>
-       <input type="email" name="employeeEmail" placeholder="Enter your email address" required class="modal-input">
+       <label class="block text-gray-700 text-sm font-semibold mb-1" for="employeeEmail">Email Address</label>
+       <input type="email" name="employeeEmail" placeholder="Enter your email address" required class="modal-input" autocomplete="email">
       </div>
       <div class="mb-6">
-       <label class="block text-gray-700 text-sm font-semibold mb-1">Password</label>
-       <input type="password" name="password" placeholder="Enter your password" required class="modal-input">
+       <label class="block text-gray-700 text-sm font-semibold mb-1" for="password">Password</label>
+       <input type="password" name="password" placeholder="Enter your password" required class="modal-input" autocomplete="current-password">
       </div>
       <div id="loginError" class="hidden mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm text-center"></div>
       <button type="submit" class="btn-primary w-full text-base">Login</button>
@@ -1225,49 +1225,49 @@
        <div class="mb-6 p-5 bg-blue-50 rounded-xl border border-blue-200">
         <h4 class="text-sm font-bold mb-4 uppercase tracking-wider text-blue-700">Shipper Information</h4>
         <div class="grid md:grid-cols-2 gap-4">
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Company Name *</label><input type="text" name="shipperCompanyName" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Contact Person *</label><input type="text" name="shipperContactName" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Phone *</label><input type="tel" name="shipperPhone" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Email *</label><input type="email" name="shipperEmail" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Street Address *</label><input type="text" name="shipperStreet" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">City *</label><input type="text" name="shipperCity" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Country *</label>
-          <select name="shipperCountry" id="shipperCountry" required onchange="updateShipperStates()" class="modal-input">
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperCompanyName">Company Name *</label><input type="text" name="shipperCompanyName" required class="modal-input" autocomplete="organization"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperContactName">Contact Person *</label><input type="text" name="shipperContactName" required class="modal-input" autocomplete="name"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperPhone">Phone *</label><input type="tel" name="shipperPhone" required class="modal-input" autocomplete="tel"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperEmail">Email *</label><input type="email" name="shipperEmail" required class="modal-input" autocomplete="email"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperStreet">Street Address *</label><input type="text" name="shipperStreet" required class="modal-input" autocomplete="street-address"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperCity">City *</label><input type="text" name="shipperCity" required class="modal-input" autocomplete="address-level2"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperCountry">Country *</label>
+          <select name="shipperCountry" id="shipperCountry" required onchange="updateShipperStates()" class="modal-input" autocomplete="off">
            <option value="">Select Country</option><option value="USA">USA</option><option value="Canada">Canada</option>
           </select></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">State/Province *</label>
-          <select name="shipperState" id="shipperState" required class="modal-input"><option value="">Select State/Province</option></select></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">ZIP/Postal Code *</label><input type="text" name="shipperZip" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Website</label><input type="url" name="shipperWebsite" placeholder="https://example.com" class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Trailer Type *</label>
-          <select name="shipperTrailerType" required class="modal-input">
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperState">State/Province *</label>
+          <select name="shipperState" id="shipperState" required class="modal-input" autocomplete="off"><option value="">Select State/Province</option></select></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperZip">ZIP/Postal Code *</label><input type="text" name="shipperZip" required class="modal-input" autocomplete="postal-code"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperWebsite">Website</label><input type="url" name="shipperWebsite" placeholder="https://example.com" class="modal-input" autocomplete="url"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperTrailerType">Trailer Type *</label>
+          <select name="shipperTrailerType" required class="modal-input" autocomplete="off">
            <option value="">Select Trailer Type</option><option>Dry Van</option><option>Reefer</option><option>Box Truck</option><option>Sprinter</option>
           </select></div>
-         <div class="md:col-span-2"><label class="block text-gray-700 text-sm font-semibold mb-1">Load Description *</label><textarea name="shipperLoadDescription" rows="3" required class="modal-input" style="resize:vertical;"></textarea></div>
+         <div class="md:col-span-2"><label class="block text-gray-700 text-sm font-semibold mb-1" for="shipperLoadDescription">Load Description *</label><textarea name="shipperLoadDescription" rows="3" required class="modal-input" style="resize:vertical;" autocomplete="off"></textarea></div>
         </div>
        </div>
        <div class="mb-6 p-5 bg-green-50 rounded-xl border border-green-200">
         <h4 class="text-sm font-bold mb-4 uppercase tracking-wider text-green-700">Receiver Information</h4>
         <div class="grid md:grid-cols-2 gap-4">
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Company Name *</label><input type="text" name="receiverCompanyName" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Contact Person *</label><input type="text" name="receiverContactName" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Phone *</label><input type="tel" name="receiverPhone" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Email *</label><input type="email" name="receiverEmail" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Street Address *</label><input type="text" name="receiverStreet" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">City *</label><input type="text" name="receiverCity" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Country *</label>
-          <select name="receiverCountry" id="receiverCountry" required onchange="updateReceiverStates()" class="modal-input">
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverCompanyName">Company Name *</label><input type="text" name="receiverCompanyName" required class="modal-input" autocomplete="organization"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverContactName">Contact Person *</label><input type="text" name="receiverContactName" required class="modal-input" autocomplete="name"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverPhone">Phone *</label><input type="tel" name="receiverPhone" required class="modal-input" autocomplete="tel"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverEmail">Email *</label><input type="email" name="receiverEmail" required class="modal-input" autocomplete="email"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverStreet">Street Address *</label><input type="text" name="receiverStreet" required class="modal-input" autocomplete="street-address"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverCity">City *</label><input type="text" name="receiverCity" required class="modal-input" autocomplete="address-level2"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverCountry">Country *</label>
+          <select name="receiverCountry" id="receiverCountry" required onchange="updateReceiverStates()" class="modal-input" autocomplete="off">
            <option value="">Select Country</option><option value="USA">USA</option><option value="Canada">Canada</option>
           </select></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">State/Province *</label>
-          <select name="receiverState" id="receiverState" required class="modal-input"><option value="">Select State/Province</option></select></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">ZIP/Postal Code *</label><input type="text" name="receiverZip" required class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Website</label><input type="url" name="receiverWebsite" placeholder="https://example.com" class="modal-input"></div>
-         <div><label class="block text-gray-700 text-sm font-semibold mb-1">Trailer Type *</label>
-          <select name="receiverTrailerType" required class="modal-input">
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverState">State/Province *</label>
+          <select name="receiverState" id="receiverState" required class="modal-input" autocomplete="off"><option value="">Select State/Province</option></select></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverZip">ZIP/Postal Code *</label><input type="text" name="receiverZip" required class="modal-input" autocomplete="postal-code"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverWebsite">Website</label><input type="url" name="receiverWebsite" placeholder="https://example.com" class="modal-input" autocomplete="url"></div>
+         <div><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverTrailerType">Trailer Type *</label>
+          <select name="receiverTrailerType" required class="modal-input" autocomplete="off">
            <option value="">Select Trailer Type</option><option>Dry Van</option><option>Reefer</option><option>Box Truck</option><option>Sprinter</option>
           </select></div>
-         <div class="md:col-span-2"><label class="block text-gray-700 text-sm font-semibold mb-1">Load Description *</label><textarea name="receiverLoadDescription" rows="3" required class="modal-input" style="resize:vertical;"></textarea></div>
+         <div class="md:col-span-2"><label class="block text-gray-700 text-sm font-semibold mb-1" for="receiverLoadDescription">Load Description *</label><textarea name="receiverLoadDescription" rows="3" required class="modal-input" style="resize:vertical;" autocomplete="off"></textarea></div>
         </div>
        </div>
        <button type="submit" class="btn-primary w-full text-base">Register Client</button>
@@ -1281,19 +1281,19 @@
      <div id="contactTrackingTabContent" class="tab-content hidden">
       <h3 class="text-xl font-bold mb-5" style="color:var(--black)">Contact Tracking</h3>
       <form id="contactTrackingForm" onsubmit="handleContactTracking(event)">
-       <div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-1">Client Company *</label><input type="text" name="clientCompany" required class="modal-input"></div>
-       <div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-1">Client Type *</label>
-        <select name="clientType" required class="modal-input"><option value="">Select Type</option><option>Shipper</option><option>Receiver</option></select></div>
+       <div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-1" for="clientCompany">Client Company *</label><input type="text" name="clientCompany" required class="modal-input" autocomplete="organization"></div>
+       <div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-1" for="clientType">Client Type *</label>
+        <select name="clientType" required class="modal-input" autocomplete="off"><option value="">Select Type</option><option>Shipper</option><option>Receiver</option></select></div>
        <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-semibold mb-2">Contact Methods *</label>
+        <label class="block text-gray-700 text-sm font-semibold mb-2" for="contactMethod">Contact Methods *</label>
         <div class="space-y-2">
-         <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="contactMethod" value="Email" class="accent-red-600"><span>&#x2709;&#xFE0F; Email</span></label>
-         <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="contactMethod" value="Phone" class="accent-red-600"><span>&#x1F4DE; Phone Call</span></label>
-         <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="contactMethod" value="Social Media" class="accent-red-600"><span>&#x1F4AC; Social Media</span></label>
-         <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="contactMethod" value="WhatsApp" class="accent-red-600"><span>&#x1F49A; WhatsApp</span></label>
+         <label class="flex items-center gap-2 cursor-pointer" for="contactMethod"><input type="checkbox" name="contactMethod" value="Email" class="accent-red-600" autocomplete="off"><span>&#x2709;&#xFE0F; Email</span></label>
+         <label class="flex items-center gap-2 cursor-pointer" for="contactMethod"><input type="checkbox" name="contactMethod" value="Phone" class="accent-red-600" autocomplete="off"><span>&#x1F4DE; Phone Call</span></label>
+         <label class="flex items-center gap-2 cursor-pointer" for="contactMethod"><input type="checkbox" name="contactMethod" value="Social Media" class="accent-red-600" autocomplete="off"><span>&#x1F4AC; Social Media</span></label>
+         <label class="flex items-center gap-2 cursor-pointer" for="remarks"><input type="checkbox" name="contactMethod" value="WhatsApp" class="accent-red-600" autocomplete="off"><span>&#x1F49A; WhatsApp</span></label>
         </div>
        </div>
-       <div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-1">Remarks *</label><textarea name="remarks" rows="4" required class="modal-input" style="resize:vertical;"></textarea></div>
+       <div class="mb-4"><label class="block text-gray-700 text-sm font-semibold mb-1" for="remarks">Remarks *</label><textarea name="remarks" rows="4" required class="modal-input" style="resize:vertical;" autocomplete="off"></textarea></div>
        <button type="submit" class="btn-primary w-full text-base">Record Contact</button>
       </form>
      </div>
